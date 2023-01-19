@@ -1,0 +1,9 @@
+    M = random.randrange(1, 10)
+    sample_input = f"{M}"
+    inputlist.append(sample_input+"\n")
+    mlst=[]
+    for r in range(0,M):
+        m =random.randrange(10,100)
+        mlst.append(str(m))
+
+    inputlist.append(' '.join(mlst))
