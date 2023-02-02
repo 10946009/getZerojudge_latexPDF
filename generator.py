@@ -23,7 +23,17 @@ for i in range(secret_count):
     # 在這裡定義隱藏測資邏輯!!!!!!!!!!!!
     # sample_input = 一行文字
     # inputlist.append(sample_input+"\n") 用來存入每一行的測資，結尾\n用來換行
-    #此為zj-d074的範例
+
+    # 此為zj-a001的範例，直接定義secret即可
+    # secret=['python','c++','hello','a123','abcdefg']
+
+    # 此為zj-a002的範例，定義兩個數的亂數
+    # a = random.randrange(0,10000)
+    # b = random.randrange(0,10000)
+    # sample_input = f'{a} {b}\n'
+    # inputlist.append(f'sample_input')
+    
+    # 此為zj-d074的範例，定義亂數
     M = random.randrange(1, 10)
     sample_input = f"{M}"
     inputlist.append(sample_input+"\n")
@@ -36,8 +46,9 @@ for i in range(secret_count):
     #測資邏輯結束
 
     #輸出secret
-    strinputlist = ''.join(inputlist)
-    secret.append(strinputlist)
+    if len(secret) == secret_count:
+        break 
+    secret.append(''.join(inputlist))
 
 
 #----------------------------------------------------
