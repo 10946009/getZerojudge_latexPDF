@@ -12,7 +12,9 @@ import shutil
 # 2.在這裡放入想要抓的zerojudge題目，英文要小寫
 numberlist = ['d074']
 
-# 3.如果需要取得python的ans檔案，輸入1，否則輸入0
+# 3.取得順序:品>github的python的ans檔案，輸入1
+#   只取得github不取得品上的ans檔案，輸入2
+#   不取得答案輸入0
 #   沒有此題的答案會顯示沒有答案
 get_ans = 1
 
@@ -22,23 +24,56 @@ timelimit=1
 # 4. 至generator.py寫隱藏測資邏輯
 # 5. 使用main.tex把路徑修改，\includes{zj-xxxx要改的題號/problem.tex}，把產好的pdf放入題號/dom資料夾
 
+
 # -----------------------程式碼的部分-------------------------------
 #爬取品茹在hackmd的python答案
 def get_hackmd_ans(path,number):
+    global problem_from
     url = f'https://hackmd.io/@10946009/zj-{number}'
     html = requests.get(url)
     html.encoding = 'UTF-8'
     sp = BeautifulSoup(html.text, 'html.parser')
-    # print(sp)
     try:
         title = sp.find('div', class_='container-fluid markdown-body').text
         splitlst = '#!/usr/bin/env python '+'\n# '+list(title.split('```'))[1]
         a = open(f'{path}/dom/ans.py','w')
         a.write(splitlst)
         a.close
-    except Exception as err:
-        print(err)
-        print(number,'沒有答案')
+        print('取得品茹的答案')
+        problem_from = problem_from + f'% 品python:https://hackmd.io/@10946009/zj-{number} \n'
+    except :
+        print(f'品茹無答案!')
+        get_git_other_ans(path,number)
+
+#爬取別人github上的答案
+def get_git_other_ans(path,number):
+    global problem_from
+    other_giturl=['x1001000/solutions-ZeroJudge','Sam-0225/Zerojudge-answer','PO-YE-2978/Zerojudge-APCS-answer']
+    for i in other_giturl:
+        url = f'https://raw.githubusercontent.com/{i}/master/{number}.py'
+        html = requests.get(url)
+        html.encoding = 'UTF-8'
+        sp = BeautifulSoup(html.text, 'html.parser')
+        #如果沒有404就抓答案
+        if '404: Not Found' not in sp.text:
+            a = open(f'{path}/dom/ans.py','w', encoding='UTF-8')
+            a.write(sp.text)
+            a.close
+            print(f'取得了{i}的答案')
+            problem_from = problem_from + f'% {i}:https://github.com/{i}/blob/master/{number}.py \n'
+            break
+        else:
+            print(f'{i}無答案!')
+
+def check_yuihuang(number):
+    global problem_from
+    url = f'https://yuihuang.com/zj-'+number
+    html = requests.get(url)
+    html.encoding = 'UTF-8'
+    sp = BeautifulSoup(html.text, 'html.parser')
+    #判斷404
+    if 'Error 404' not in sp.text:
+        problem_from = problem_from + f'% 黃惟:https://yuihuang.com/zj-{number} \n'
 
 # 取代常用的特殊字元轉為latex格式
 def replace_special_characters(st):
@@ -104,15 +139,25 @@ for number in numberlist:
         if not os.path.isdir(f'{path}/dom/data/sample'):
             os.mkdir(f'{path}/dom/data/sample')
         for index,io in enumerate(input_output):
+            io = io.replace('\r', '\n')
             io = io.replace('\\\\\n', '')
             if index % 2 == 0:
                 sample_file(f'{path}/dom/data/sample',f'{(index+2)//2}.in',io)
             else:
                 sample_file(f'{path}/dom/data/sample',f'{(index+2)//2}.ans',io)
         
+        #題目來源變數
+        problem_from = '% 題目來源:https://zerojudge.tw/ShowProblem?problemid='+number
+        
+        #判斷有沒有黃惟的連結
+        check_yuihuang(number)
 
-        problem_from = '% 題目來源:https://zerojudge.tw/ShowProblem?problemid='+number+'\n% 黃惟:https://yuihuang.com/zj-'+number+'\n% 品python:https://hackmd.io/@10946009/zj-'+number+'\n'
-
+        #要不要抓取python ans的開關
+        if get_ans == 1:
+            get_hackmd_ans(path,number)
+        elif get_ans == 2:
+            get_git_other_ans(path,number)
+            
         #建立檔案&傳放入的文字
         output_file(path,'statement.tex',problem_from+lst[0])
         output_file(path,'input.tex',lst[1])
@@ -129,9 +174,6 @@ for number in numberlist:
         if not os.path.isfile(f'{path}/dom/generator.py'):
             shutil.copyfile(f1,f2)
 
-        #要不要抓取python ans的開關
-        if get_ans:
-            get_hackmd_ans(path,number)
     except Exception as err:
         print(err)
         print(number,"無此題目")
