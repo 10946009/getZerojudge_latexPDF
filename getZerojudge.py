@@ -48,6 +48,8 @@ def get_hackmd_ans(path,number):
 #爬取別人github上的答案
 def get_git_other_ans(path,number):
     global problem_from
+    # 放入別人的帳號/title即可
+    # 對方的答案檔名需要符合格式 例如:a001.py a002.py
     other_giturl=['x1001000/solutions-ZeroJudge','Sam-0225/Zerojudge-answer','PO-YE-2978/Zerojudge-APCS-answer']
     for i in other_giturl:
         url = f'https://raw.githubusercontent.com/{i}/master/{number}.py'
@@ -147,7 +149,7 @@ for number in numberlist:
                 sample_file(f'{path}/dom/data/sample',f'{(index+2)//2}.ans',io)
         
         #題目來源變數
-        problem_from = '% 題目來源:https://zerojudge.tw/ShowProblem?problemid='+number
+        problem_from = f'% 題目來源:https://zerojudge.tw/ShowProblem?problemid={number} \n'
         
         #判斷有沒有黃惟的連結
         check_yuihuang(number)
@@ -157,7 +159,7 @@ for number in numberlist:
             get_hackmd_ans(path,number)
         elif get_ans == 2:
             get_git_other_ans(path,number)
-            
+
         #建立檔案&傳放入的文字
         output_file(path,'statement.tex',problem_from+lst[0])
         output_file(path,'input.tex',lst[1])
