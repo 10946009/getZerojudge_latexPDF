@@ -38,7 +38,7 @@ def get_hackmd_ans(path,number):
         splitlst = '#!/usr/bin/env python '+'\n# '+list(title.split('```'))[1]
         a = open(f'{path}/dom/ans.py','w')
         a.write(splitlst)
-        a.close
+        a.close()
         print('取得品茹的答案')
         problem_from = problem_from + f'% 品python:https://hackmd.io/@10946009/zj-{number} \n'
     except :
@@ -60,7 +60,7 @@ def get_git_other_ans(path,number):
         if '404: Not Found' not in sp.text:
             a = open(f'{path}/dom/ans.py','w', encoding='UTF-8')
             a.write(sp.text)
-            a.close
+            a.close()
             print(f'取得了{i}的答案')
             problem_from = problem_from + f'% {i}:https://github.com/{i}/blob/master/{number}.py \n'
             break
@@ -69,13 +69,16 @@ def get_git_other_ans(path,number):
 
 def check_yuihuang(number):
     global problem_from
-    url = f'https://yuihuang.com/zj-'+number
-    html = requests.get(url)
-    html.encoding = 'UTF-8'
-    sp = BeautifulSoup(html.text, 'html.parser')
-    #判斷404
-    if 'Error 404' not in sp.text:
-        problem_from = problem_from + f'% 黃惟:https://yuihuang.com/zj-{number} \n'
+    try:
+        url = f'https://yuihuang.com/zj-'+number
+        html = requests.get(url,timeout=1)
+        html.encoding = 'UTF-8'
+        sp = BeautifulSoup(html.text, 'html.parser')
+        #判斷404
+        if 'Error 404' not in sp.text:
+            problem_from = problem_from + f'% 黃惟:https://yuihuang.com/zj-{number} \n'
+    except:
+        print('黃惟網站timeout!')
 
 # 取代常用的特殊字元轉為latex格式
 def replace_special_characters(st):
@@ -97,13 +100,13 @@ def replace_special_characters(st):
 def output_file(path,name,lststring):
     f = open(f'{path}/{name}','w',encoding='UTF-8')
     f.write(lststring)
-    f.close
+    f.close()
 
 #針對sample的in,ans檔轉LF
 def sample_file(path,name,lststring):
     f = open(f'{path}/{name}','wb')
     f.write((str(lststring)+'\n').encode())
-    f.close
+    f.close()
 
 # 爬取zerojudge題目的部分
 for number in numberlist:
