@@ -50,7 +50,7 @@ def get_git_other_ans(path,number):
     global problem_from
     # 放入別人的帳號/title即可
     # 對方的答案檔名需要符合格式 例如:a001.py a002.py
-    other_giturl=['x1001000/solutions-ZeroJudge','Sam-0225/Zerojudge-answer','PO-YE-2978/Zerojudge-APCS-answer']
+    other_giturl=['10946009/pyanszj']
     for i in other_giturl:
         url = f'https://raw.githubusercontent.com/{i}/master/{number}.py'
         html = requests.get(url)
