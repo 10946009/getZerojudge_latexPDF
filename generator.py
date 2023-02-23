@@ -6,14 +6,12 @@ import glob
 ############################################################################
 def generate_random_one(m_min,m_max):
     global inputlist
-    m_max += 1
     r = random.randrange(m_min,m_max+1)
     inputlist.append(f'{r} \n')
     return r
 
 def generate_random_many(many,m_min,m_max,repeat,sort):
     global inputlist
-    m_max += 1
     random_lst = []
     if repeat:
         for i in range(int(many)):
@@ -28,8 +26,6 @@ def generate_random_many(many,m_min,m_max,repeat,sort):
 
 def generate_random_first_many(f_min,f_max,m_min,m_max,repeat,sort):
     global inputlist
-    m_max += 1
-    f_max += 1
     random_lst = []
     r = random.randrange(f_min,f_max)
     if repeat:
@@ -131,6 +127,7 @@ number = len(os.listdir(os.getcwd()+'/data/sample'))//2
 for i, d in enumerate(secret):
     number += 1
     generate_in_ans_file(d, secret_path, number)
+
 
 # main.pdf更名為problem.pdf
 if 'main.pdf' in os.listdir(os.getcwd()):
