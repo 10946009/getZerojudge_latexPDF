@@ -132,3 +132,5 @@ for i, d in enumerate(secret):
     number += 1
     generate_in_ans_file(d, secret_path, number)
 
+if 'main.pdf' in os.listdir(os.getcwd()):
+    os.rename('main.pdf','problem.pdf')
