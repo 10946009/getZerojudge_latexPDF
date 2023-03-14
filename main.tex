@@ -79,7 +79,12 @@
 
   \vspace{0mm}
   \begin{paracol}{\COLS}
-
+    \lstset{
+      extendedchars=false,
+      commentstyle=\color{blue},
+      texcl,
+      escapeinside=``, % 當遇到 `` 時，裡面的文字保持原本 style 不受 listing 限制
+      }
    \subsection*{Sample Input \arabic{ncase}} \vspace{1mm} \lstinputlisting{#1/dom/data/sample/\arabic{ncase}.in}
 
 %\ifthenelse{\equal{#1}{D}}{\ifthenelse{\equal{\arabic{ncase}}{2}}{\newpage}{}}{}
@@ -155,61 +160,13 @@
   \abovedisplayskip=2pt
   \belowdisplayskip=2pt
 
-  %\tableofcontents
-  %\vspace*{0mm}
-  %\problem{A00}{Ice Cream}{1}{1024}
-
-  % 商業類科出題用
-  % \begin{figure}[htbp]
-  %     % \centerline{\includegraphics{fig1.png}}
-  %     %\includegraphics[height=1.7in,width=5.2in]{fig3.pdf}
-  %     \includegraphics[width=6.2in]{fig3.pdf}
-  %     %\caption{圖範例}
-  %     %\label{fig}
-  % \end{figure}
-
-  %\newpage
-
-  % 商業類科出題用
-  % \begin{center}
-  %  \noindent {\bf 題目} 
-  % \end{center}
-  %  題目內容
-  % \begin{itemize}
-  % \item Page 1. 
-  % \item Page 2. 
-  % \item Page 3. 
-  % \item P
-  % \end{itemize}
-
-  %  (程式執行限制時間: 1 秒，為原則。) 
-
-
   \newpage
   %   \fancyhead[C]{\includegraphics[width=1\textwidth]{header.png} \\ 2022 ICPC Asia Taoyuan Site}  
 
 
   \newcommand{\includes}[1]{\IfFileExists{#1}{\input{#1}}{}}
 
-  % \includes{A00/problem.tex}
-  % \includes{CSES1636/problem.tex}
-  % \includes{judge174b/problem.tex}
-  % \includes{judge174s/problem.tex}
-  % \includes{judge139/problem.tex}
-  \includes{zj-d074/problem.tex}
-
-  % \includes{GTwoSum/problem.tex}
-  % \includes{C01/problem.tex}
-  % \includes{D25/problem.tex}
-  % \includes{E99/problem.tex}
-  % \includes{F62/problem.tex}
-  % \includes{G12/problem.tex}
-  % \includes{H99/problem.tex}
-  % \includes{I75/problem.tex}
-  % \includes{J38/problem.tex}
-  % \includes{K99/problem.tex}
-  % \includes{L50/problem.tex}
-  % \includes{M00/problem.tex}
+  \includes{zj-d065/problem.tex}
 
 \end{CJK*}
 
