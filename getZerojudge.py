@@ -2,7 +2,7 @@ import requests
 import os
 from bs4 import BeautifulSoup
 import shutil
-
+import re
 # 1.事前準備
 #  安裝套件
 #  pip install requests
@@ -10,19 +10,20 @@ import shutil
 #  資料夾底下要準備generator.py檔案
 
 # 2.在這裡放入想要抓的zerojudge題目，英文要小寫
-numberlist = ['d074']
+numberlist = ['d827']
 
 # 3.取得順序:品>github的python的ans檔案，輸入1
 #   只取得github不取得品上的ans檔案，輸入2
 #   不取得答案輸入0
 #   沒有此題的答案會顯示沒有答案
 get_ans = 1
-
+# 是否要讓main_題號.tex生成main_題號.pdf 要=1 不要=2
+run_pdf = 0
 #設定時間
 timelimit=1
 
 # 4. 至generator.py寫隱藏測資邏輯
-# 5. 使用main.tex把路徑修改，\includes{zj-xxxx要改的題號/problem.tex}，把產好的pdf放入題號/dom資料夾
+# 5. 如沒有problem.PDF，使用main_題號.tex產pdf放入./題號/dom資料夾
 
 
 # -----------------------程式碼的部分-------------------------------
@@ -71,13 +72,14 @@ def check_yuihuang(number):
     global problem_from
     try:
         url = f'https://yuihuang.com/zj-'+number
-        html = requests.get(url,timeout=1)
+        html = requests.get(url,timeout=3)
         html.encoding = 'UTF-8'
         sp = BeautifulSoup(html.text, 'html.parser')
         #判斷404
         if 'Error 404' not in sp.text:
             problem_from = problem_from + f'% 黃惟:https://yuihuang.com/zj-{number} \n'
     except:
+        problem_from = problem_from + f'% 黃惟:https://yuihuang.com/zj-{number} \n'
         print('黃惟網站timeout!')
 
 # 取代常用的特殊字元轉為latex格式
@@ -94,6 +96,7 @@ def replace_special_characters(st):
     st = st.replace('\\\\', '\\\\\n')
     st = st.replace('<', '$<$')
     st = st.replace('>', '$>$')
+    st = st.replace('%', '\%')
     return st
 
 #新增&寫入檔案，放入路徑、檔名、要寫入的字
@@ -178,6 +181,32 @@ for number in numberlist:
         f2 = f'{path}/dom/generator.py'
         if not os.path.isfile(f'{path}/dom/generator.py'):
             shutil.copyfile(f1,f2)
+        
+        # 執行main.tex
+        if os.path.isfile(os.getcwd()+'/main.tex'):
+            with open(os.getcwd()+'/main.tex', 'r') as f:
+                with open(os.getcwd()+f'/main_{number}.tex', 'a') as f_temp:
+                    for line in f.readlines():
+                        if 'problem.tex' in line:
+                            f_temp.write(re.sub('\{.*?\}','{'+f'zj-{number}/problem.tex'+'}',line))
+                            continue
+                        f_temp.write(line)
+            if run_pdf:
+                os.system(f'pdflatex main_{number}.tex')
+                #如果成功產出來了就放進去並改檔名
+                new_pdf = os.getcwd()+f'/main_{number}.pdf'
+                path_dom = os.getcwd()+f'/zj-{number}/dom/'
+                if os.path.isfile(new_pdf):
+                    print('pdf產生ok')
+                    shutil.move(new_pdf,path_dom)
+                    os.rename(f'{path_dom}main_{number}.pdf',f'{path_dom}problem.pdf')
+            
+                #刪除暫存
+                remove_tamp=[f'main_{number}.aux',f'main_{number}.log',f'main_{number}.out']
+                for r in remove_tamp:
+                    os.remove(r)
+        else:
+            print('pdf產生失敗')
 
     except Exception as err:
         print(err)
