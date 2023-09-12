@@ -1,4 +1,5 @@
 # getZerojudge_latexPDF
+# 待測試中...
 ## 步驟
 1.開啟getZerojudge.py，修改numberlist變數
   輸入需要爬的zj題號即可，可以多筆，
