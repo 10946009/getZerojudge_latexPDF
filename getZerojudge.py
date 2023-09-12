@@ -14,7 +14,7 @@ from hanziconv import HanziConv
 #  資料夾底下要準備generator.py、main.tex檔案
 
 # 2.在這裡放入想要抓的zerojudge題目編號
-numberlist = ['b147']
+numberlist = ['d049']
 
 # 3.取得順序:品>github的python的ans檔案，輸入1
 #   只取得github不取得品上的ans檔案，輸入2
@@ -141,7 +141,6 @@ def get_zerojudge_problem(number,path):
             st = i.text.strip()
             problem_all_text.append(st)
             # 取代常用特殊字元
-            print(problem_all_text)
             st = HanziConv.toTraditional(replace_special_characters(st))
             lst.append(st)
         input_output = lst[3:]
@@ -167,7 +166,7 @@ def get_zerojudge_problem(number,path):
         output_file(f'{path}/dom','problem.yaml',f'name: {title}')
         output_file(f'{path}/dom','domjudge-problem.ini',f"timelimit='{timelimit}'")
 
-        #複製generator.py到各個資料夾
+        #複製generator.py到資料夾
         f1 = f'{os.getcwd()}/generator.py'
         f2 = f'{path}/dom/generator.py'
         if not os.path.isfile(f'{path}/dom/generator.py'):
@@ -228,4 +227,5 @@ for number in numberlist:
         get_hackmd_ans(path,number)
     elif get_ans == 2:
         get_git_other_ans(path,number)
+        
     sleep(sleep_time)
