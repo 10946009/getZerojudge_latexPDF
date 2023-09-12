@@ -1,1 +1,0 @@
-taskkill /IM acrobat.exe & del mainhint.out mainhint.log mainhint.pdf mainhint.aux & pdflatex mainhint &pdflatex mainhint& start mainhint.pdf

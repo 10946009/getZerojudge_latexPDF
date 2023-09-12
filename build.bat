@@ -1,1 +1,0 @@
-taskkill /IM acrobat.exe & del main.out main.log main.pdf main.aux & pdflatex main &pdflatex main& start main.pdf

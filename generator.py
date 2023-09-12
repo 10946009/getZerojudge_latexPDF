@@ -7,7 +7,7 @@ import glob
 def generate_random_one(m_min,m_max):
     global inputlist
     r = random.randrange(m_min,m_max+1)
-    inputlist.append(f'{r}\n')
+    inputlist.append(f'{r} \n')
     return r
 
 def generate_random_many(many,m_min,m_max,repeat,sort):
@@ -38,6 +38,26 @@ def generate_random_first_many(f_min,f_max,m_min,m_max,repeat,sort):
 
     inputlist.append(f'{r} '+' '.join(list(map(str,random_lst)))+'\n')
     return random_lst
+def generate_random_word():
+    global inputlist
+    word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
+    response = requests.get(word_site)
+    WORDS = response.content.splitlines()
+    r = WORDS[random.randrange(0,len(WORDS)-1)]
+    inputlist.append(str(r)[2:-1:]+'\n')
+    return r
+
+def generate_random_longword():
+    global inputlist
+    rlist = []
+    word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
+    response = requests.get(word_site)
+    WORDS = response.content.splitlines()
+    for i in range(random.randrange(8,15)):
+        r = WORDS[random.randrange(0,len(WORDS)-1)]
+        rlist.append(str(r)[2:-1:])
+    inputlist.append(' '.join(rlist)+'.\n')
+    return r
 #############################################################################
 
 # 1. 請先把解答程式放在ans.py
