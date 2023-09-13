@@ -14,7 +14,7 @@ from hanziconv import HanziConv
 #  資料夾底下要準備generator.py、main.tex檔案
 
 # 2.在這裡放入想要抓的zerojudge題目編號
-numberlist = ['d049']
+numberlist = ['a001','a002']
 
 # 3.取得順序:品>github的python的ans檔案，輸入1
 #   只取得github不取得品上的ans檔案，輸入2
