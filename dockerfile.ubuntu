@@ -1,0 +1,27 @@
+FROM ubuntu:22.04
+
+WORKDIR /app
+# 1.產生光碟
+# docker build -t ubuntu-starter -f dockerfile.ubuntu .
+
+# 2.docker run
+    # 2-1 Windows CMD
+    # docker run -idt --name ubuntu-starter -v %cd%:/app ubuntu-starter
+    # 2-2 Windows PowerShell、 Linux、Mac (vscode)
+    # docker run -idt --name ubuntu-starter -v ${PWD}:/app ubuntu-starter
+
+# 3.啟動
+# docker exec -it ubuntu-starter /bin/bash
+
+RUN apt update &&\
+    apt install texlive -y &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-fonts-extra  &&\
+    apt-get install texlive-fonts-recommended -y &&\
+    apt-get install texlive-latex-extra -y &&\
+    apt-get install texlive-latex-base -y &&\
+    apt-get install latex-cjk-all -y &&\
+    apt install python3 &&\
+    apt install python3-pip -y &&\
+    pip install requests &&\
+    pip install beautifulsoup4 &&\
+    pip install hanziconv==0.2.1
