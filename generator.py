@@ -72,12 +72,19 @@ secret_count = 5
 
 secret = []
 for i in range(secret_count):
-    sample_input = ''
-    inputlist = []
+    sample_input = ''# sample_input = 一行文字
+    inputlist = [] # inputlist.append(sample_input+"\n") 用來存入每一行的測資，結尾\n用來換行
 
     # 在這裡定義隱藏測資邏輯!!!!!!!!!!!!
-    # sample_input = 一行文字
-    # inputlist.append(sample_input+"\n") 用來存入每一行的測資，結尾\n用來換行
+    # generate_random_one(最小值,最大值)
+        # 會回傳一個亂數且自動塞入inputlist
+
+    # generate_random_many(亂數數量,最小值,最大值,是否可重複,是否排序)
+        # 會回傳一個亂數list且自動塞入inputlist
+
+    # generate_random_first_many(第一個數字最小值,第一個數字最大值,亂數list的最小值,亂數list的最大值,是否可重複,是否排序)
+        # 根據第一個的數字決定後面要產多少數字，會回傳一個亂數list且自動塞入inputlist
+    
 
     # 此為zj-a001的範例，直接定義secret即可
     # secret=['python','c++','hello','a123','abcdefg']
@@ -90,7 +97,7 @@ for i in range(secret_count):
     # 此為zj-d074的範例，自定義亂數
     # M = random.randrange(1, 10)
     # sample_input = f"{M}"
-    # inputlist.append(sample_input+"\n")
+    # inputlist.append(sample_input+"\n") #最後一個\n用來換行
     # mlst=[]
     # for r in range(0,M):
     #     m =random.randrange(10,100)
@@ -100,17 +107,14 @@ for i in range(secret_count):
     
 
     #此為zj-d074的呼叫方法範例
-    # generate_random_one(最小值,最大值)，會回傳一個亂數且自動塞入inputlist
-    # generate_random_many(亂數數量,最小值,最大值,是否可重複,是否排序)，會回傳一個亂數list且自動塞入inputlist
-    # generate_random_first_many(第一個數字最小值,第一個數字最大值,亂數list的最小值,亂數list的最大值,是否可重複,是否排序)
-    # 根據第一個的數字決定後面要產多少數字，會回傳一個亂數list且自動塞入inputlist
-    a = generate_random_one(1,10) # 1~10的亂數
-    generate_random_many(a,25,50,0,0)
-    print(inputlist)
+    # a = generate_random_one(1,10) # 1~10的亂數
+    # generate_random_many(a,25,50,0,0)
+    
     
     
     #測資邏輯結束
     #輸出secret
+    print(inputlist)
     if len(secret) == secret_count:
         break 
     secret.append(''.join(inputlist))
@@ -136,7 +140,7 @@ path = [
     secret_path
 ]
 
-# 建立secret資料夾
+# 建立data/secret資料夾
 for p in path:
     if not os.path.isdir(p):
         os.mkdir(p)
@@ -147,8 +151,3 @@ number = len(os.listdir(os.getcwd()+'/data/sample'))//2
 for i, d in enumerate(secret):
     number += 1
     generate_in_ans_file(d, secret_path, number)
-
-
-# main.pdf更名為problem.pdf
-if 'main.pdf' in os.listdir(os.getcwd()):
-    os.rename('main.pdf','problem.pdf')
